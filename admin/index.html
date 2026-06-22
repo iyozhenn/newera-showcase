@@ -1,0 +1,925 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Admin Panel — NEW ERA</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow:wght@300;400;600&display=swap" rel="stylesheet">
+
+  <style>
+
+    :root{
+      --black:#0a0a0a;
+      --dark:#111111;
+      --card:#161616;
+      --border:#2a2a2a;
+      --gold:#c9a84c;
+      --gold-lt:#e8c96a;
+      --white:#f0ece4;
+      --muted:#777;
+      --red:#ff5f5f;
+
+      --display:'Bebas Neue', sans-serif;
+      --body:'Barlow', sans-serif;
+    }
+
+    *{
+      margin:0;
+      padding:0;
+      box-sizing:border-box;
+    }
+
+    body{
+      background:var(--black);
+      color:var(--white);
+      font-family:var(--body);
+    }
+
+    header{
+      position:sticky;
+      top:0;
+      z-index:100;
+
+      background:rgba(10,10,10,0.95);
+
+      border-bottom:1px solid var(--border);
+
+      backdrop-filter:blur(10px);
+    }
+
+    .nav{
+      max-width:1200px;
+      margin:auto;
+
+      height:64px;
+
+      padding:0 2rem;
+
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+    }
+
+    .logo{
+      text-decoration:none;
+      font-family:var(--display);
+      font-size:1.5rem;
+      color:var(--white);
+    }
+
+    .logo span{
+      color:var(--gold);
+    }
+
+    .right{
+      display:flex;
+      align-items:center;
+      gap:1rem;
+    }
+
+    .admin-label{
+      color:var(--gold);
+      text-transform:uppercase;
+      letter-spacing:.15em;
+      font-size:.75rem;
+    }
+
+    #logout-btn{
+      border:none;
+      background:var(--gold);
+
+      color:#000;
+
+      padding:.7rem 1rem;
+
+      font-weight:600;
+      cursor:pointer;
+
+      transition:.2s;
+    }
+
+    #logout-btn:hover{
+      background:var(--gold-lt);
+    }
+
+    .wrap{
+      max-width:1200px;
+      margin:auto;
+      padding:4rem 2rem;
+    }
+
+    .top{
+      color:var(--gold);
+      text-transform:uppercase;
+      letter-spacing:.2em;
+      font-size:.7rem;
+
+      margin-bottom:1rem;
+    }
+
+    h1{
+      font-family:var(--display);
+      font-size:5rem;
+      line-height:1;
+
+      margin-bottom:3rem;
+    }
+
+    .grid{
+      display:grid;
+      grid-template-columns:360px 1fr;
+      gap:2rem;
+    }
+
+    .card{
+      background:var(--card);
+      border:1px solid var(--border);
+
+      padding:2rem;
+    }
+
+    .card-title{
+      font-family:var(--display);
+      font-size:2rem;
+
+      margin-bottom:1.5rem;
+    }
+
+    form{
+      display:flex;
+      flex-direction:column;
+      gap:1rem;
+    }
+
+    input,
+    textarea,
+    select{
+      width:100%;
+
+      background:#0f0f0f;
+      border:1px solid var(--border);
+
+      color:var(--white);
+
+      padding:1rem;
+
+      outline:none;
+
+      font-family:var(--body);
+    }
+
+    textarea{
+      min-height:120px;
+      resize:none;
+    }
+
+    .btn-add{
+      border:none;
+
+      background:var(--gold);
+      color:#000;
+
+      padding:1rem;
+
+      font-weight:600;
+      cursor:pointer;
+
+      transition:.2s;
+    }
+
+    .btn-add:hover{
+      background:var(--gold-lt);
+    }
+
+    .products{
+      display:grid;
+      gap:1rem;
+    }
+
+    .product{
+      background:var(--card);
+      border:1px solid var(--border);
+
+      padding:1rem;
+
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+
+      gap:1rem;
+    }
+
+    .product-left{
+      display:flex;
+      align-items:center;
+      gap:1rem;
+    }
+
+    .product img{
+      width:90px;
+      height:70px;
+      object-fit:cover;
+
+      border:1px solid var(--border);
+    }
+
+    .name{
+      font-weight:600;
+      margin-bottom:.3rem;
+    }
+
+    .cat{
+      color:var(--muted);
+      font-size:.8rem;
+    }
+
+    .price{
+      color:var(--gold);
+      font-size:.8rem;
+      letter-spacing:.05em;
+      margin-top:.35rem;
+    }
+
+    .delete{
+      border:none;
+
+      background:var(--red);
+      color:#fff;
+
+      padding:.7rem 1rem;
+
+      cursor:pointer;
+    }
+
+    .edit-btn{
+      text-decoration:none;
+      background:transparent;
+      border:1px solid var(--gold);
+      color:var(--gold);
+      padding:.7rem 1rem;
+      transition:.2s;
+    }
+
+    .edit-btn:hover{
+      background:var(--gold);
+      color:#000;
+    }
+
+    .empty{
+      text-align:center;
+      padding:4rem;
+      color:var(--muted);
+    }
+
+    .loading{
+      min-height:100vh;
+
+      display:flex;
+      align-items:center;
+      justify-content:center;
+
+      color:var(--muted);
+
+      letter-spacing:.1em;
+    }
+
+    .popup-overlay{
+      position:fixed;
+      inset:0;
+      background:rgba(0,0,0,.75);
+
+      display:flex;
+      align-items:center;
+      justify-content:center;
+
+      opacity:0;
+      pointer-events:none;
+
+      transition:.25s;
+      z-index:999;
+    }
+
+    .popup-overlay.show{
+      opacity:1;
+      pointer-events:auto;
+    }
+    
+    .popup-box{
+      width:420px;
+      max-width:90%;
+
+      background:var(--card);
+      border:1px solid var(--border);
+
+      padding:2rem;
+      text-align:center;
+    }
+
+    .popup-box h3{
+      font-family:var(--display);
+      font-size:2rem;
+      margin-bottom:.8rem;
+    }
+
+    .popup-box p{
+      color:var(--muted);
+    margin-bottom:2rem;
+    }
+
+    .popup-actions{
+      display:flex;
+      gap:1rem;
+    }
+
+    .popup-cancel,
+    .popup-confirm{
+      flex:1;
+      border:none;
+      padding:1rem;
+      cursor:pointer;
+      font-weight:600;
+    }
+
+    .popup-cancel{
+      background:#222;
+      color:var(--white);
+    }
+
+    .popup-confirm{
+      background:var(--gold);
+      color:#000;
+    }
+
+    .popup-confirm:hover{
+      background:var(--gold-lt);
+    }
+
+    @media(max-width:900px){
+
+      .grid{
+        grid-template-columns:1fr;
+      }
+
+      h1{
+        font-size:3.5rem;
+      }
+
+      .product{
+        flex-direction:column;
+        align-items:flex-start;
+      }
+
+      .nav{
+        padding:0 1rem;
+      }
+
+      .wrap{
+        padding:3rem 1rem;
+      }
+    }
+
+  </style>
+</head>
+<body>
+
+<div class="loading" id="loading">
+  Checking authentication...
+</div>
+
+<div id="admin-panel" style="display:none;">
+
+  <header>
+
+    <div class="nav">
+
+      <a href="../index.html" class="logo">
+        NEW <span>ERA</span>®
+      </a>
+
+      <div class="right">
+
+        <p class="admin-label">
+          Admin Panel
+        </p>
+
+        <button id="logout-btn">
+          Logout
+        </button>
+
+      </div>
+
+    </div>
+
+  </header>
+
+  <section class="wrap">
+
+    <p class="top">Dashboard</p>
+
+    <h1>MANAGE PRODUCTS.</h1>
+
+    <div class="grid">
+
+      <!-- ADD PRODUCT -->
+      <div class="card">
+
+        <h2 class="card-title">
+          Add Product
+        </h2>
+
+        <form id="product-form">
+
+          <input
+            type="text"
+            id="name"
+            placeholder="Product Name"
+            required
+          >
+
+          <select id="category" required>
+            <option value="">Select Category</option>
+            <option>Headwear</option>
+            <option>Tops</option>
+            <option>Bottoms</option>
+            <option>Bags</option>
+          </select>
+
+          <input
+            type="text"
+            id="subcategory"
+            placeholder="Subcategory"
+          >
+
+          <input
+            type="number"
+            id="price"
+            step="0.01"
+            min="0"
+            placeholder="Price"
+            required
+          >
+
+          <input
+            type="text"
+            id="badge"
+            placeholder="Badge (Optional)"
+          >
+
+          <input
+            type="text"
+            id="sizes"
+            placeholder="Sizes (S,M,L)"
+          >
+
+          <input
+            type="text"
+            id="colors"
+            placeholder="Colors (Black,White)"
+          >
+
+          <input
+            type="text"
+            id="image"
+            placeholder="Image URL"
+            required
+          >
+
+          <textarea
+            id="description"
+            placeholder="Description"
+          ></textarea>
+
+          <button class="btn-add" type="submit">
+            Add Product
+          </button>
+
+        </form>
+
+      </div>
+
+      <!-- PRODUCTS -->
+      <div>
+
+        <div class="products" id="products">
+
+          <div class="empty">
+            Loading products...
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </section>
+
+</div>
+
+<div id="popup" class="popup-overlay">
+
+  <div class="popup-box">
+
+    <h3 id="popup-title">
+      Confirm Delete
+    </h3>
+
+    <p id="popup-text">
+      Delete this product?
+    </p>
+
+    <div class="popup-actions">
+
+      <button id="popup-cancel" class="popup-cancel">
+        Cancel
+      </button>
+
+      <button id="popup-confirm" class="popup-confirm">
+        Confirm
+      </button>
+
+    </div>
+
+  </div>
+
+</div>
+
+<script type="module">
+
+  import { db, auth }
+  from "../js/firebase-config.js";
+
+  import {
+    collection,
+    addDoc,
+    getDocs,
+    deleteDoc,
+    doc,
+    updateDoc
+  }
+  from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+
+  import {
+    onAuthStateChanged,
+    signOut
+  }
+  from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+
+  const loading =
+    document.getElementById("loading");
+
+  const adminPanel =
+    document.getElementById("admin-panel");
+
+  const form =
+    document.getElementById("product-form");
+
+  const productsEl =
+    document.getElementById("products");
+
+  const logoutBtn =
+    document.getElementById("logout-btn");
+
+  const popup =
+    document.getElementById("popup");
+
+  const popupTitle =
+    document.getElementById("popup-title");
+
+  const popupText =
+    document.getElementById("popup-text");
+
+  const popupConfirm =
+    document.getElementById("popup-confirm");
+
+  const popupCancel =
+    document.getElementById("popup-cancel");
+
+  // AUTH CHECK
+  onAuthStateChanged(auth, async (user) => {
+
+    if(user){
+
+      loading.style.display = "none";
+
+      adminPanel.style.display = "block";
+
+
+      await loadProducts();
+
+      // show popup AFTER everything is ready
+      const justLoggedIn = localStorage.getItem("justLoggedIn");
+
+      if (justLoggedIn === "true") {
+
+        setTimeout(() => { // small delay makes it feel smoother
+
+          popupTitle.innerText = "Welcome Admin";
+          popupText.innerText = "Logged in successfully as ADMIN.";
+          popup.classList.add("show");
+
+          popupConfirm.style.display = "none";
+          popupCancel.innerText = "Close";
+
+          popupCancel.onclick = () => {
+            popup.classList.remove("show");
+
+            popupConfirm.style.display = "block";
+            popupCancel.innerText = "Cancel";
+
+            localStorage.removeItem("justLoggedIn");
+          };
+
+        }, 300);
+      }
+
+    } else {
+
+      window.location.replace("login.html");
+    }
+  });
+
+  // LOGOUT
+  logoutBtn.addEventListener("click", async () => {
+
+  try {
+
+    logoutBtn.innerText = "Logging out...";
+
+    // show popup FIRST
+    popupTitle.innerText = "Logged Out";
+    popupText.innerText = "You have been successfully logged out.";
+    popup.classList.add("show");
+
+    popupConfirm.style.display = "none";
+    popupCancel.innerText = "Close";
+
+    // mark logout state
+    localStorage.setItem("justLoggedOut", "true");
+
+    popupCancel.onclick = async () => {
+      popup.classList.remove("show");
+
+      await signOut(auth);
+
+      window.location.replace("login.html");
+    };
+
+    adminPanel.style.display = "none";
+
+  } catch (err) {
+
+    console.error(err);
+    alert("Logout failed.");
+    logoutBtn.innerText = "Logout";
+  }
+
+});
+
+  // LOAD PRODUCTS
+  async function loadProducts(){
+
+    const snap =
+      await getDocs(collection(db, "products"));
+
+    productsEl.innerHTML = "";
+
+    if(snap.empty){
+
+      productsEl.innerHTML = `
+        <div class="empty">
+          No products found.
+        </div>
+      `;
+
+      return;
+    }
+
+    snap.forEach(productDoc => {
+
+      const p = {
+        id: productDoc.id,
+        ...productDoc.data()
+      };
+
+      const div =
+        document.createElement("div");
+
+      div.className = "product";
+
+      div.innerHTML = `
+
+        <div class="product-left">
+
+          <img src="${p.image}" alt="${p.name}">
+
+          <div>
+
+            <p class="name">
+              ${p.name}
+            </p>
+
+            <p class="cat">
+              ${p.category} · ${p.subcategory}
+            </p>
+
+            <p class="price">
+              MYR ${Number(p.price || 0).toFixed(2)}
+            </p>
+
+          </div>
+
+        </div>
+
+        <div style="display:flex; gap:.5rem;">
+          <a href="edit-product.html?id=${p.id}" class="edit-btn">
+            Edit
+          </a>
+          
+          <button class="delete" data-id="${p.id}">
+            Delete
+          </button>
+        </div>
+      `;
+
+      productsEl.appendChild(div);
+    });
+
+  // attach delete buttons
+document
+  .querySelectorAll(".delete")
+  .forEach(btn => {
+
+    btn.addEventListener("click", () => {
+
+      const id = btn.dataset.id;
+
+      popupTitle.innerText =
+        "Delete Product";
+
+      popupText.innerText =
+        "Are you sure you want to delete this product?";
+
+      popup.classList.add("show");
+
+      popupConfirm.style.display =
+        "block";
+
+      popupConfirm.innerText =
+        "Confirm";
+
+      popupCancel.innerText =
+        "Cancel";
+
+      popupConfirm.onclick = async () => {
+
+        popupConfirm.innerText =
+          "Deleting...";
+
+        await deleteDoc(
+          doc(db, "products", id)
+        );
+
+        popupTitle.innerText =
+          "Deleted";
+
+        popupText.innerText =
+          "Product deleted successfully.";
+
+        popupConfirm.style.display =
+          "none";
+
+        popupCancel.innerText =
+          "Close";
+
+        await loadProducts();
+      };
+
+      popupCancel.onclick = () => {
+
+        popup.classList.remove("show");
+
+        popupConfirm.style.display =
+          "block";
+
+        popupConfirm.innerText =
+          "Confirm";
+
+        popupCancel.innerText =
+          "Cancel";
+      };
+
+    });
+
+  });
+}
+
+  // ADD PRODUCT
+  form.addEventListener("submit", async (e) => {
+
+    e.preventDefault();
+
+    const product = {
+
+      name:
+        document.getElementById("name").value,
+
+      category:
+        document.getElementById("category").value,
+
+      subcategory:
+        document.getElementById("subcategory").value,
+
+      price:
+        Number(document.getElementById("price").value),
+
+      badge:
+        document.getElementById("badge").value || null,
+
+      sizes:
+        document.getElementById("sizes")
+          .value
+          .split(",")
+          .map(s => s.trim()),
+
+      colors:
+        document.getElementById("colors")
+          .value
+          .split(",")
+          .map(c => c.trim()),
+
+      image:
+        document.getElementById("image").value,
+
+      description:
+        document.getElementById("description").value,
+
+      createdAt:
+        new Date()
+    };
+
+    try {
+
+      await addDoc(
+        collection(db, "products"),
+        product
+      );
+      
+      popupTitle.innerText =
+      "Success";
+
+      popupText.innerText =
+        "Product added successfully.";
+
+      popup.classList.add("show");
+
+      popupConfirm.style.display =
+        "none";
+
+      popupCancel.innerText =
+        "Close";
+
+      popupCancel.onclick = async () => {
+
+        popup.classList.remove("show");
+
+        popupConfirm.style.display =
+          "block";
+
+        popupConfirm.innerText =
+          "Confirm";
+
+        popupCancel.innerText =
+          "Cancel";
+
+        form.reset();
+
+        await loadProducts();
+      };
+    } catch(error) {
+      
+      console.error(error);
+
+      popupTitle.innerText =
+        "Error";
+
+      popupText.innerText =
+        "Failed to add product.";
+
+      popup.classList.add("show");
+
+      popupConfirm.style.display =
+        "none";
+
+      popupCancel.innerText =
+        "Close";
+      }
+    
+    });
+
+</script>
+
+</body>
+</html>

@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>About — NEW ERA</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow:wght@300;400;600&display=swap" rel="stylesheet">
+
+  <style>
+    :root{
+      --black:#0a0a0a;
+      --dark:#111111;
+      --card:#161616;
+      --border:#2a2a2a;
+      --gold:#c9a84c;
+      --white:#f0ece4;
+      --muted:#777;
+      --display:'Bebas Neue', sans-serif;
+      --body:'Barlow', sans-serif;
+    }
+
+    *{
+      margin:0;
+      padding:0;
+      box-sizing:border-box;
+    }
+
+    body{
+      background:var(--black);
+      color:var(--white);
+      font-family:var(--body);
+    }
+
+    /* NAVBAR */
+    header{
+      position:sticky;
+      top:0;
+      z-index:100;
+      background:rgba(10,10,10,0.95);
+      border-bottom:1px solid var(--border);
+      backdrop-filter:blur(10px);
+    }
+
+    .nav-inner{
+      max-width:1200px;
+      margin:auto;
+      height:64px;
+      padding:0 2rem;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+    }
+
+    .logo{
+      text-decoration:none;
+      font-family:var(--display);
+      font-size:1.5rem;
+    }
+
+    .logo-ne{
+      color:var(--white);
+    }
+
+    .logo-era{
+      color:var(--gold);
+    }
+
+    .logo-r{
+      color:var(--muted);
+      font-size:.75rem;
+      vertical-align:super;
+    }
+
+    nav{
+      display:flex;
+      gap:2rem;
+    }
+
+    .nav-a{
+      text-decoration:none;
+      color:var(--muted);
+      text-transform:uppercase;
+      font-size:.75rem;
+      letter-spacing:.12em;
+      transition:.2s;
+    }
+
+    .nav-a:hover,
+    .nav-a.active{
+      color:var(--gold);
+    }
+
+    /* CONTENT */
+    .wrap{
+      max-width:900px;
+      margin:auto;
+      padding:6rem 2rem;
+    }
+
+    .top{
+      color:var(--gold);
+      letter-spacing:.2em;
+      text-transform:uppercase;
+      font-size:.7rem;
+      margin-bottom:1rem;
+    }
+
+    h1{
+      font-family:var(--display);
+      font-size:clamp(4rem,10vw,6rem);
+      line-height:1;
+      margin-bottom:2rem;
+    }
+
+    .text{
+      color:#bdbdbd;
+      line-height:2;
+      font-size:1rem;
+    }
+
+    /* FOOTER */
+    footer{
+      margin-top:5rem;
+      padding:3rem 2rem;
+      text-align:center;
+      border-top:1px solid var(--border);
+      background:var(--dark);
+    }
+
+    .footer-logo{
+      font-family:var(--display);
+      font-size:2.5rem;
+      letter-spacing:.1em;
+      color:var(--border);
+      margin-bottom:.5rem;
+    }
+
+    footer p{
+      color:var(--muted);
+      font-size:.75rem;
+      letter-spacing:.05em;
+    }
+
+    /* MOBILE */
+    @media(max-width:768px){
+      .nav-inner{
+        padding:0 1rem;
+      }
+
+      nav{
+        gap:1rem;
+      }
+
+      .wrap{
+        padding:4rem 1.5rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- HEADER -->
+  <header>
+    <div class="nav-inner">
+      <a href="index.html" class="logo">
+        <span class="logo-ne">NEW</span>
+        <span class="logo-era">ERA</span>
+        <span class="logo-r">®</span>
+      </a>
+
+      <nav>
+        <a href="index.html" class="nav-a">Home</a>
+        <a href="products.html" class="nav-a">Products</a>
+        <a href="about.html" class="nav-a active">About</a>
+        <a href="contact.html" class="nav-a">Contact</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- ABOUT -->
+  <div class="wrap">
+    <p class="top">About New Era</p>
+
+    <h1>STYLE MEETS CULTURE.</h1>
+
+    <p class="text">
+      New Era is a globally recognised lifestyle and headwear brand known for blending sports, fashion, and street culture into one identity. Since 1920, New Era has created iconic collections worn by athletes, artists, and communities around the world.
+      <br><br>
+      This showcase website highlights selected New Era collections including headwear, apparel, and accessories in a modern and minimal experience inspired by the brand’s premium aesthetic.
+    </p>
+  </div>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-logo">NEW ERA®</div>
+    <p>© 2025 New Era Cap Co., Inc. — Showcase Website</p>
+  </footer>
+
+</body>
+</html>

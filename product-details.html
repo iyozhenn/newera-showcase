@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Product Details — NEW ERA</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow:wght@300;400;600&display=swap" rel="stylesheet">
+
+  <style>
+    :root{
+      --black:#0a0a0a;
+      --dark:#111;
+      --card:#161616;
+      --border:#2a2a2a;
+      --gold:#c9a84c;
+      --white:#f0ece4;
+      --muted:#777;
+      --display:'Bebas Neue', sans-serif;
+      --body:'Barlow', sans-serif;
+    }
+
+    *{
+      margin:0;
+      padding:0;
+      box-sizing:border-box;
+    }
+
+    body{
+      background:var(--black);
+      color:var(--white);
+      font-family:var(--body);
+    }
+
+    /* NAVBAR */
+    header{
+      position:sticky;
+      top:0;
+      z-index:100;
+      background:rgba(10,10,10,0.95);
+      border-bottom:1px solid var(--border);
+      backdrop-filter:blur(10px);
+    }
+
+    .nav-inner{
+      max-width:1200px;
+      margin:auto;
+      height:64px;
+      padding:0 2rem;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+    }
+
+    .logo{
+      text-decoration:none;
+      font-family:var(--display);
+      font-size:1.5rem;
+    }
+
+    .logo-ne{
+      color:var(--white);
+    }
+
+    .logo-era{
+      color:var(--gold);
+    }
+
+    .logo-r{
+      color:var(--muted);
+      font-size:.75rem;
+      vertical-align:super;
+    }
+
+    nav{
+      display:flex;
+      gap:2rem;
+    }
+
+    .nav-a{
+      text-decoration:none;
+      color:var(--muted);
+      text-transform:uppercase;
+      font-size:.75rem;
+      letter-spacing:.12em;
+      transition:.2s;
+    }
+
+    .nav-a:hover,
+    .nav-a.active{
+      color:var(--gold);
+    }
+
+    /* PRODUCT SECTION */
+    .container{
+      max-width:1200px;
+      margin:auto;
+      padding:5rem 2rem;
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:4rem;
+    }
+
+    img{
+      width:100%;
+      border:1px solid var(--border);
+    }
+
+    .cat{
+      color:var(--gold);
+      text-transform:uppercase;
+      letter-spacing:.15em;
+      font-size:.75rem;
+      margin-bottom:1rem;
+    }
+
+    h1{
+      font-family:var(--display);
+      font-size:4rem;
+      line-height:1;
+      margin-bottom:1rem;
+    }
+
+    .price{
+      font-size:1.3rem;
+      margin-bottom:2rem;
+    }
+
+    .desc{
+      color:#bbb;
+      line-height:1.8;
+      margin-bottom:2rem;
+    }
+
+    .box{
+      border-top:1px solid var(--border);
+      padding-top:1rem;
+      margin-top:1rem;
+    }
+
+    .label{
+      color:var(--gold);
+      margin-bottom:.5rem;
+      font-size:.8rem;
+      text-transform:uppercase;
+      letter-spacing:.1em;
+    }
+
+    .back{
+      display:inline-block;
+      margin-top:2rem;
+      text-decoration:none;
+      color:var(--gold);
+    }
+
+    /* FOOTER */
+    footer{
+      margin-top:4rem;
+      padding:3rem 2rem;
+      text-align:center;
+      border-top:1px solid var(--border);
+      background:var(--dark);
+    }
+
+    .footer-logo{
+      font-family:var(--display);
+      font-size:2.5rem;
+      letter-spacing:.1em;
+      color:var(--border);
+      margin-bottom:.5rem;
+    }
+
+    footer p{
+      color:var(--muted);
+      font-size:.75rem;
+      letter-spacing:.05em;
+    }
+
+    /* MOBILE */
+    @media(max-width:900px){
+
+      .container{
+        grid-template-columns:1fr;
+      }
+
+      .nav-inner{
+        padding:0 1rem;
+      }
+
+      nav{
+        gap:1rem;
+      }
+
+      h1{
+        font-size:3rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- HEADER -->
+  <header>
+    <div class="nav-inner">
+      <a href="index.html" class="logo">
+        <span class="logo-ne">NEW</span>
+        <span class="logo-era">ERA</span>
+        <span class="logo-r">®</span>
+      </a>
+
+      <nav>
+        <a href="index.html" class="nav-a">Home</a>
+        <a href="products.html" class="nav-a active">Products</a>
+        <a href="about.html" class="nav-a">About</a>
+        <a href="contact.html" class="nav-a">Contact</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- PRODUCT -->
+  <section class="container" id="product"></section>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-logo">NEW ERA®</div>
+    <p>© 2025 New Era Cap Co., Inc. — Showcase Website</p>
+  </footer>
+
+<script type="module">
+  import { db } from "./js/firebase-config.js";
+  import {
+    doc,
+    getDoc
+  } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+
+  const params = new URLSearchParams(window.location.search);
+  const id = params.get("id");
+
+  async function loadProduct(){
+    const ref = doc(db, "products", id);
+    const snap = await getDoc(ref);
+
+    if(!snap.exists()){
+      
+      document.getElementById("product").innerHTML = `
+        <div style="grid-column:1/-1;text-align:center;">
+          <h1>PRODUCT NOT FOUND</h1>
+          <a href="products.html" class="back">
+            ← Back to Products
+          </a>
+        </div>
+      `;
+
+      return;
+    }
+
+    const p = snap.data();
+
+    // Backlink after data is initialized
+    const backLink = p.category
+      ? `products.html?cat=${encodeURIComponent(p.category)}`
+      : "products.html";
+
+    document.getElementById("product").innerHTML = `
+      <div>
+        <img src="${p.image}" alt="${p.name}">
+      </div>
+
+      <div>
+        <p class="cat">${p.category} · ${p.subcategory}</p>
+
+        <h1>${p.name}</h1>
+
+        <p class="price">MYR ${Number(p.price).toFixed(2)}</p>
+
+        <p class="desc">${p.description}</p>
+
+        <div class="box">
+          <p class="label">Sizes Available</p>
+          <p>${p.sizes ? p.sizes.join(", ") : "Not specified"}</p>
+        </div>
+
+        <div class="box">
+          <p class="label">Colors Available</p>
+          <p>${p.colors ? p.colors.join(", ") : "Not specified"}</p>
+        </div>
+
+        <a href="${backLink}" class="back">
+          ← Back to Products
+        </a>
+      </div>
+    `;
+  }
+
+  loadProduct();
+</script>
+
+</body>
+</html>

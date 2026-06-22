@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Products — NEW ERA</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow:wght@300;400;600&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --black:#0a0a0a;
+      --dark:#111;
+      --card:#161616;
+      --border:#2a2a2a;
+      --gold:#c9a84c;
+      --white:#f0ece4;
+      --muted:#777;
+      --display:'Bebas Neue', sans-serif;
+      --body:'Barlow', sans-serif;
+    }
+
+    *{
+      margin:0;
+      padding:0;
+      box-sizing:border-box;
+    }
+
+    body{
+      background:var(--black);
+      color:var(--white);
+      font-family:var(--body);
+    }
+
+    header{
+      position:sticky;
+      top:0;
+      background:rgba(10,10,10,0.95);
+      border-bottom:1px solid var(--border);
+      z-index:100;
+    }
+
+    .nav{
+      max-width:1200px;
+      margin:auto;
+      height:64px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      padding:0 2rem;
+    }
+
+    .logo{
+      text-decoration:none;
+      font-family:var(--display);
+      font-size:1.5rem;
+      color:var(--white);
+    }
+
+    .logo span{
+      color:var(--gold);
+    }
+
+    nav{
+      display:flex;
+      gap:2rem;
+    }
+
+    nav a{
+      text-decoration:none;
+      color:var(--muted);
+      font-size:.8rem;
+      text-transform:uppercase;
+      letter-spacing:.1em;
+    }
+
+    nav a:hover,
+    nav a.active{
+      color:var(--gold);
+    }
+
+    .hero{
+      padding:5rem 2rem 3rem;
+      text-align:center;
+    }
+
+    .hero p{
+      color:var(--gold);
+      letter-spacing:.2em;
+      text-transform:uppercase;
+      font-size:.7rem;
+      margin-bottom:1rem;
+    }
+
+    .hero h1{
+      font-family:var(--display);
+      font-size:5rem;
+      line-height:1;
+    }
+
+    .grid{
+      max-width:1200px;
+      margin:auto;
+      padding:2rem;
+      display:grid;
+      grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+      gap:1px;
+      background:var(--border);
+    }
+
+    .card{
+      background:var(--card);
+      text-decoration:none;
+      color:var(--white);
+      overflow:hidden;
+      transition:.3s;
+    }
+
+    .card:hover{
+      background:#1d1d1d;
+      transform:translateY(-4px);
+    }
+
+    .card img{
+      width:100%;
+      aspect-ratio:4/3;
+      object-fit:cover;
+    }
+
+    .body{
+      padding:1.5rem;
+    }
+
+    .cat{
+      color:var(--gold);
+      font-size:.7rem;
+      text-transform:uppercase;
+      letter-spacing:.12em;
+      margin-bottom:.5rem;
+    }
+
+    .name{
+      font-family:var(--display);
+      font-size:1.5rem;
+      margin-bottom:1rem;
+    }
+
+    .price{
+      color:var(--white);
+      font-weight:600;
+    }
+
+    .loading{
+      text-align:center;
+      padding:5rem;
+      color:var(--muted);
+      grid-column:1/-1;
+    }
+    /* ── FOOTER ────────────────────────────────── */
+    footer { background:var(--dark); border-top:1px solid var(--border); padding:3rem 2rem; text-align:center; }
+    .footer-logo { font-family:var(--display); font-size:2.5rem; letter-spacing:0.1em; color:var(--border); margin-bottom:0.5rem; }
+    footer p { font-size:0.75rem; color:var(--muted); letter-spacing:0.05em; }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="nav">
+    <a href="index.html" class="logo">NEW<span>ERA</span>®</a>
+
+    <nav>
+      <a href="index.html">Home</a>
+      <a href="products.html" class="active">Products</a>
+      <a href="about.html">About</a>
+      <a href="contact.html">Contact</a>
+    </nav>
+  </div>
+</header>
+
+<section class="hero">
+  <p>Product Collection</p>
+  <h1 id="title">PRODUCTS</h1>
+
+  <input type="text" id="searchInput" placeholder="Search products..."
+    style="
+      margin-top: 1.5rem;
+      padding: 0.8rem 1rem;
+      width: 280px;
+      max-width: 90%;
+      border: 1px solid #2a2a2a;
+      background: #111;
+      color: #f0ece4;
+      border-radius: 6px;
+      outline: none;
+    ">
+</section>
+
+<section class="grid" id="grid">
+  <div class="loading">Loading products...</div>
+</section>
+
+<script type="module">
+  import { db } from "./js/firebase-config.js";
+  import {
+    collection,
+    query,
+    where,
+    getDocs
+  } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+
+  const params = new URLSearchParams(window.location.search);
+  const category = params.get("cat");
+
+  if(category){
+    document.getElementById("title").textContent = category;
+  }
+
+  let allProducts = [];
+
+  async function loadProducts(){
+    const grid = document.getElementById("grid");
+
+    let q;
+
+    if(category){
+      q = query(
+        collection(db, "products"),
+        where("category", "==", category)
+      );
+    } else {
+      q = collection(db, "products");
+    }
+
+    const snap = await getDocs(q);
+
+    allProducts = [];
+
+    snap.forEach(doc => {
+      const p = { id: doc.id, ...doc.data() };
+      allProducts.push(p);
+    });
+
+    renderProducts(allProducts);
+  }
+
+  function renderProducts(list){
+    const grid = document.getElementById("grid");
+    grid.innerHTML = "";
+
+    if(list.length === 0){
+      grid.innerHTML = `<div class="loading">No products found.</div>`;
+      return;
+    }
+
+    list.forEach(p => {
+      const card = document.createElement("a");
+      card.href = `product-details.html?id=${p.id}`;
+      card.className = "card";
+
+      card.innerHTML = `
+        <img src="${p.image}" alt="${p.name}">
+        <div class="body">
+          <p class="cat">${p.category} • ${p.subcategory}</p>
+          <h2 class="name">${p.name}</h2>
+          <p class="price">MYR ${Number(p.price).toFixed(2)}</p>
+        </div>
+      `;
+
+      grid.appendChild(card);
+    });
+  }
+
+  loadProducts();
+
+  document.getElementById("searchInput").addEventListener("input", (e) => {
+    const value = e.target.value.toLowerCase();
+
+    const filtered = allProducts.filter(p =>
+      p.name.toLowerCase().includes(value) ||
+      p.category.toLowerCase().includes(value) ||
+      p.subcategory.toLowerCase().includes(value)
+    );
+
+    renderProducts(filtered);
+  });
+
+</script>
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-logo">
+      NEW ERA®
+    </div>
+
+    <p>
+      © 2025 New Era Cap Co., Inc. — Showcase Website
+    </p>
+    </footer>
+</body>
+</html>

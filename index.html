@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>NEW ERA — Official Showcase</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow:wght@300;400;600&display=swap" rel="stylesheet">
+  <style>
+    /* ── VARIABLES ─────────────────────────────── */
+    :root {
+      --black:   #0a0a0a;
+      --dark:    #111111;
+      --card:    #161616;
+      --border:  #2a2a2a;
+      --gold:    #c9a84c;
+      --gold-lt: #e8c96a;
+      --white:   #f0ece4;
+      --muted:   #666;
+      --display: 'Bebas Neue', sans-serif;
+      --body:    'Barlow', sans-serif;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body { background: var(--black); color: var(--white); font-family: var(--body); font-weight: 300; overflow-x: hidden; }
+ 
+    /* NOISE */
+    .noise { pointer-events:none; position:fixed; inset:0; z-index:9999; opacity:0.025;
+      background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E"); }
+ 
+    /* ── NAV ───────────────────────────────────── */
+    header { position:fixed; top:0; left:0; right:0; z-index:100; background:rgba(10,10,10,0.92); backdrop-filter:blur(12px); border-bottom:1px solid var(--border); }
+    .nav-inner { max-width:1280px; margin:0 auto; padding:0 2rem; height:64px; display:flex; align-items:center; justify-content:space-between; }
+    .logo { font-family:var(--display); font-size:1.5rem; letter-spacing:0.05em; text-decoration:none; }
+    .logo-ne  { color:var(--white); }
+    .logo-era { color:var(--gold); margin-left:3px; }
+    .logo-r   { color:var(--muted); font-size:0.75rem; vertical-align:super; margin-left:2px; }
+    nav { display:flex; gap:2rem; }
+    .nav-a { font-family:var(--body); font-weight:600; font-size:0.73rem; letter-spacing:0.12em; text-transform:uppercase; text-decoration:none; color:var(--muted); transition:color 0.2s; }
+    .nav-a:hover, .nav-a.active { color:var(--gold); }
+    .admin-btn { font-family:var(--body); font-weight:600; font-size:0.7rem; letter-spacing:0.1em; text-transform:uppercase; text-decoration:none; color:var(--black); background:var(--gold); padding:0.45rem 1rem; border-radius:2px; transition:background 0.2s; }
+    .admin-btn:hover { background:var(--gold-lt); }
+ 
+    /* ── HERO ──────────────────────────────────── */
+    .hero { min-height:100vh; padding-top:64px; display:flex; align-items:flex-end; padding-bottom:6rem; padding-left:10vw; position:relative; overflow:hidden;
+      background: radial-gradient(ellipse 60% 60% at 80% 50%, rgba(201,168,76,0.07) 0%, transparent 70%), linear-gradient(180deg,#0a0a0a 0%,#111 100%); }
+    .hero::before { content:'NE'; position:absolute; right:-2vw; top:50%; transform:translateY(-50%); font-family:var(--display); font-size:clamp(20rem,35vw,42rem); color:rgba(201,168,76,0.04); line-height:1; pointer-events:none; user-select:none; letter-spacing:-0.05em; }
+    .hero-text { position:relative; z-index:2; }
+    .hero-eyebrow { font-size:0.75rem; letter-spacing:0.2em; text-transform:uppercase; color:var(--gold); margin-bottom:1.5rem; opacity:0; animation:fadeUp 0.8s ease 0.2s forwards; }
+    .hero-title { font-family:var(--display); font-size:clamp(5rem,14vw,14rem); line-height:0.88; color:var(--white); opacity:0; animation:fadeUp 0.9s ease 0.35s forwards; }
+    .hero-title em { font-style:normal; -webkit-text-stroke:2px var(--gold); color:transparent; }
+    .hero-sub { margin-top:2rem; font-size:0.9rem; line-height:1.7; color:var(--muted); max-width:360px; opacity:0; animation:fadeUp 0.9s ease 0.5s forwards; }
+    .hero-cta { margin-top:2.5rem; display:inline-block; font-family:var(--body); font-weight:600; font-size:0.75rem; letter-spacing:0.15em; text-transform:uppercase; text-decoration:none; color:var(--black); background:var(--gold); padding:1rem 2rem; border-radius:2px; transition:background 0.2s; opacity:0; animation:fadeUp 0.9s ease 0.65s forwards; }
+    .hero-cta:hover { background:var(--gold-lt); }
+    .hero-badge { position:absolute; right:8vw; bottom:6rem; width:100px; height:100px; border:1px solid var(--gold); border-radius:50%; display:flex; flex-direction:column; align-items:center; justify-content:center; opacity:0; animation:fadeIn 1s ease 0.8s forwards; }
+    .hero-badge span { font-size:0.6rem; letter-spacing:0.2em; text-transform:uppercase; color:var(--gold); }
+    .hero-badge strong { font-family:var(--display); font-size:2rem; color:var(--white); line-height:1; }
+    .hero-scroll { position:absolute; bottom:2rem; left:10vw; font-size:0.65rem; letter-spacing:0.2em; text-transform:uppercase; color:var(--muted); opacity:0; animation:fadeIn 1s ease 1s forwards; }
+ 
+    /* ── MARQUEE ───────────────────────────────── */
+    .marquee-wrap { background:var(--gold); overflow:hidden; padding:0.8rem 0; border-top:1px solid #b8963e; border-bottom:1px solid #b8963e; }
+    .marquee-track { display:flex; gap:3rem; white-space:nowrap; animation:marquee 20s linear infinite; }
+    .marquee-track span { font-family:var(--display); font-size:1rem; letter-spacing:0.15em; color:var(--black); }
+    .marquee-sep { color:rgba(0,0,0,0.3); }
+    @keyframes marquee { from{transform:translateX(0)} to{transform:translateX(-50%)} }
+ 
+    /* ── CATEGORIES SECTION ────────────────────── */
+    .section { max-width:1280px; margin:0 auto; padding:5rem 2rem; }
+    .section-eyebrow { font-size:0.7rem; letter-spacing:0.2em; text-transform:uppercase; color:var(--gold); margin-bottom:0.75rem; }
+    .section-title { font-family:var(--display); font-size:clamp(2.5rem,5vw,4rem); line-height:1; color:var(--white); margin-bottom:3rem; }
+    .section-title span { color:var(--gold); }
+ 
+    .cat-grid { display:grid; grid-template-columns:repeat(2,1fr); gap:1.5px; background:var(--border); }
+    @media(min-width:900px){ .cat-grid { grid-template-columns:repeat(4,1fr); } }
+ 
+    .cat-card { background:var(--card); position:relative; overflow:hidden; cursor:pointer; aspect-ratio:3/4; display:flex; flex-direction:column; justify-content:flex-end; padding:2rem; text-decoration:none; transition:background 0.3s; }
+    .cat-card::before { content:''; position:absolute; inset:0; background:linear-gradient(to top, rgba(0,0,0,0.85) 0%, transparent 60%); z-index:1; }
+    .cat-card:hover { background:#1c1c1c; }
+    .cat-card:hover .cat-icon { transform:scale(1.08); }
+    .cat-icon { position:absolute; inset:0; display:flex; align-items:center; justify-content:center; font-size:clamp(4rem,8vw,7rem); opacity:0.15; transition:transform 0.4s ease; user-select:none; }
+    .cat-body { position:relative; z-index:2; }
+    .cat-label { font-size:0.65rem; letter-spacing:0.15em; text-transform:uppercase; color:var(--gold); margin-bottom:0.4rem; }
+    .cat-name { font-family:var(--display); font-size:2rem; letter-spacing:0.05em; color:var(--white); line-height:1; margin-bottom:0.5rem; }
+    .cat-count { font-size:0.75rem; color:var(--muted); }
+    .cat-arrow { display:inline-flex; align-items:center; justify-content:center; width:36px; height:36px; border:1px solid var(--border); border-radius:50%; color:var(--muted); font-size:0.9rem; margin-top:1rem; transition:all 0.2s; }
+    .cat-card:hover .cat-arrow { border-color:var(--gold); color:var(--gold); }
+ 
+    /* ── FEATURED PRODUCTS ─────────────────────── */
+    .featured-section { background:var(--dark); border-top:1px solid var(--border); border-bottom:1px solid var(--border); }
+    .product-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(260px,1fr)); gap:1.5px; background:var(--border); }
+    .product-card { background:var(--card); cursor:pointer; position:relative; overflow:hidden; transition:transform 0.3s,background 0.2s; text-decoration:none; display:block; }
+    .product-card:hover { background:#1c1c1c; transform:translateY(-3px); z-index:2; box-shadow:0 12px 40px rgba(0,0,0,0.6); }
+    .card-img { width:100%; aspect-ratio:4/3; object-fit:cover; display:block; filter:grayscale(20%); transition:filter 0.3s; }
+    .product-card:hover .card-img { filter:grayscale(0%); }
+    .card-badge { position:absolute; top:1rem; left:1rem; background:var(--gold); color:var(--black); font-size:0.6rem; font-weight:600; letter-spacing:0.1em; text-transform:uppercase; padding:0.3rem 0.6rem; border-radius:1px; }
+    .card-body { padding:1.5rem; border-top:1px solid var(--border); }
+    .card-cat { font-size:0.65rem; letter-spacing:0.15em; text-transform:uppercase; color:var(--gold); margin-bottom:0.4rem; }
+    .card-name { font-family:var(--display); font-size:1.4rem; letter-spacing:0.03em; color:var(--white); line-height:1.1; margin-bottom:0.8rem; }
+    .card-foot { display:flex; align-items:center; justify-content:space-between; }
+    .card-price { font-weight:600; font-size:1rem; color:var(--white); }
+    .card-price span { font-size:0.7rem; font-weight:300; color:var(--muted); margin-right:2px; }
+    .card-arrow2 { width:32px; height:32px; border:1px solid var(--border); border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:0.8rem; color:var(--muted); transition:all 0.2s; }
+    .product-card:hover .card-arrow2 { border-color:var(--gold); color:var(--gold); }
+    .loading { text-align:center; padding:4rem; color:var(--muted); font-size:0.8rem; letter-spacing:0.15em; text-transform:uppercase; grid-column:1/-1; }
+ 
+    /* ── FOOTER ────────────────────────────────── */
+    footer { background:var(--dark); border-top:1px solid var(--border); padding:3rem 2rem; text-align:center; }
+    .footer-logo { font-family:var(--display); font-size:2.5rem; letter-spacing:0.1em; color:var(--border); margin-bottom:0.5rem; }
+    footer p { font-size:0.75rem; color:var(--muted); letter-spacing:0.05em; }
+ 
+    /* ── ANIMATIONS ────────────────────────────── */
+    @keyframes fadeUp { from{opacity:0;transform:translateY(24px)} to{opacity:1;transform:translateY(0)} }
+    @keyframes fadeIn { from{opacity:0} to{opacity:1} }
+ 
+    /* ── RESPONSIVE ────────────────────────────── */
+    @media(max-width:768px) {
+      .nav-inner { padding:0 1rem; }
+      nav { display:none; }
+      .hero { padding-left:1.5rem; padding-bottom:5rem; }
+      .hero-badge { display:none; }
+      .section { padding:3rem 1rem; }
+    }
+  </style>
+</head>
+<body>
+  <div class="noise"></div>
+ 
+  <!-- HEADER -->
+  <header>
+    <div class="nav-inner">
+      <a href="index.html" class="logo">
+        <span class="logo-ne">NEW</span><span class="logo-era">ERA</span><span class="logo-r">®</span>
+      </a>
+      <nav>
+        <a href="index.html"        class="nav-a active">Home</a>
+        <a href="products.html"     class="nav-a">Products</a>
+        <a href="about.html"        class="nav-a">About</a>
+        <a href="contact.html"      class="nav-a">Contact</a>
+      </nav>
+      <a href="admin/index.html" class="admin-btn">Admin ↗</a>
+    </div>
+  </header>
+ 
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-text">
+      <p class="hero-eyebrow">Est. 1920 · Buffalo, NY</p>
+      <h1 class="hero-title">WEAR<br><em>YOUR</em><br>FLAG.</h1>
+      <p class="hero-sub">Premium headwear and apparel for those who define culture, not follow it.</p>
+      <a href="products.html" class="hero-cta">Shop the Collection →</a>
+    </div>
+    <div class="hero-badge"><span>SINCE</span><strong>1920</strong></div>
+    <div class="hero-scroll">scroll to explore ↓</div>
+  </section>
+ 
+  <!-- MARQUEE -->
+  <div class="marquee-wrap">
+    <div class="marquee-track">
+      <span>59FIFTY</span><span class="marquee-sep">·</span>
+      <span>BEANIES</span><span class="marquee-sep">·</span>
+      <span>HEADWEAR</span><span class="marquee-sep">·</span>
+      <span>TOPS</span><span class="marquee-sep">·</span>
+      <span>BOTTOMS</span><span class="marquee-sep">·</span>
+      <span>BAGS</span><span class="marquee-sep">·</span>
+      <span>NEW ERA®</span><span class="marquee-sep">·</span>
+      <span>59FIFTY</span><span class="marquee-sep">·</span>
+      <span>BEANIES</span><span class="marquee-sep">·</span>
+      <span>HEADWEAR</span><span class="marquee-sep">·</span>
+      <span>TOPS</span><span class="marquee-sep">·</span>
+      <span>BOTTOMS</span><span class="marquee-sep">·</span>
+      <span>BAGS</span><span class="marquee-sep">·</span>
+      <span>NEW ERA®</span><span class="marquee-sep">·</span>
+    </div>
+  </div>
+ 
+  <!-- CATEGORIES -->
+  <section class="section">
+    <p class="section-eyebrow">Browse by Category</p>
+    <h2 class="section-title">The <span>Collection</span></h2>
+    <div class="cat-grid">
+      <a href="products.html?cat=Headwear" class="cat-card">
+        <div class="cat-icon">🧢</div>
+        <div class="cat-body">
+          <p class="cat-label">Category</p>
+          <h3 class="cat-name">HEADWEAR</h3>
+          <p class="cat-count">Caps · Beanies · Snapbacks</p>
+          <div class="cat-arrow">→</div>
+        </div>
+      </a>
+      <a href="products.html?cat=Tops" class="cat-card">
+        <div class="cat-icon">👕</div>
+        <div class="cat-body">
+          <p class="cat-label">Category</p>
+          <h3 class="cat-name">TOPS</h3>
+          <p class="cat-count">Tees · Hoodies · Jackets</p>
+          <div class="cat-arrow">→</div>
+        </div>
+      </a>
+      <a href="products.html?cat=Bottoms" class="cat-card">
+        <div class="cat-icon">👖</div>
+        <div class="cat-body">
+          <p class="cat-label">Category</p>
+          <h3 class="cat-name">BOTTOMS</h3>
+          <p class="cat-count">Pants · Shorts · Joggers</p>
+          <div class="cat-arrow">→</div>
+        </div>
+      </a>
+      <a href="products.html?cat=Bags" class="cat-card">
+        <div class="cat-icon">🎒</div>
+        <div class="cat-body">
+          <p class="cat-label">Category</p>
+          <h3 class="cat-name">BAGS</h3>
+          <p class="cat-count">Backpacks · Totes · Pouches</p>
+          <div class="cat-arrow">→</div>
+        </div>
+      </a>
+    </div>
+  </section>
+ 
+  <!-- FEATURED PRODUCTS -->
+  <section class="featured-section">
+    <div class="section">
+      <p class="section-eyebrow">Hand Picked</p>
+      <h2 class="section-title">Featured <span>Products</span></h2>
+      <div class="product-grid" id="featured-grid">
+        <div class="loading">Loading products...</div>
+      </div>
+    </div>
+  </section>
+ 
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-logo">NEW ERA®</div>
+    <p>© 2025 New Era Cap Co., Inc. — Showcase Website</p>
+  </footer>
+ 
+  <script type="module">
+    import { db } from "./js/firebase-config.js";
+    import { collection, query, where, limit, getDocs } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+ 
+    async function loadFeatured() {
+      const grid = document.getElementById('featured-grid');
+      try {
+        const q = query(collection(db, 'products'));
+        const snap = await getDocs(q);
+
+        if (snap.empty) {
+          grid.innerHTML = `<div class="loading">No products found. <a href="seed.html" style="color:var(--gold)">Seed products →</a></div>`;
+          return;
+        }
+
+        let products = [];
+
+        snap.forEach(doc => {
+          products.push({ id: doc.id, ...doc.data() });
+        });
+
+        // shuffle (randomize)
+        for (let i = products.length - 1; i > 0; i--) {
+          const j = Math.floor(Math.random() * (i + 1));
+          [products[i], products[j]] = [products[j], products[i]];
+        }
+
+        // Featured Products should have Image, Name and Price
+        const featured = products
+        .filter(p => p.image && p.name && p.price)
+        .slice(0, 4);
+
+        grid.innerHTML = '';
+
+        featured.forEach(p => {
+          const card = document.createElement('a');
+          card.href = `product-details.html?id=${p.id}`;
+          card.className = 'product-card';
+
+          card.innerHTML = `
+            <img class="card-img" src="${p.image}" alt="${p.name}" loading="lazy"/>
+            ${p.badge ? `<span class="card-badge">${p.badge}</span>` : ''}
+            <div class="card-body">
+              <p class="card-cat">${p.category} · ${p.subcategory}</p>
+              <h3 class="card-name">${p.name}</h3>
+              <div class="card-foot">
+                <p class="card-price"><span>MYR </span>${Number(p.price).toFixed(2)}</p>
+                <div class="card-arrow2">→</div>
+              </div>
+            </div>`;
+
+          grid.appendChild(card);
+        });
+      } catch(e) {
+        grid.innerHTML = `<div class="loading">Error loading products: ${e.message}</div>`;
+      }
+    }
+ 
+    loadFeatured();
+  </script>
+</body>
+</html>
